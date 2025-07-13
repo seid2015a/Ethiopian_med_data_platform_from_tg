@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: fct_messages
+    description: Fact table for Telegram messages, linked to dimensions.
+    columns:
+      - name: message_id
+        description: Unique identifier for the message.
+        tests:
+          - unique
+          - not_null
+      - name: channel_id
+        description: Foreign key to dim_channels.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_channels')
+              field: channel_id
+      - name: date_key
+        description: Foreign key to dim_dates.
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_dates')
+              field: date_key
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "message_length >= 0" # Custom test: message length must be non-negative
+          name: 'message_length_non_negative'
+          description: 'Ensures that message_length is not negative'
