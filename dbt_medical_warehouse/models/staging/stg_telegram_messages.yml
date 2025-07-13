@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: stg_telegram_messages
+    description: Staging model for raw Telegram messages.
+    columns:
+      - name: message_id
+        description: Unique identifier for the message.
+        tests:
+          - unique
+          - not_null
+      - name: channel_name
+        description: Name of the Telegram channel.
+        tests:
+          - not_null
+      - name: message_date
+        description: Timestamp when the message was posted.
+        tests:
+          - not_null
+      - name: has_image
+        description: Boolean indicating if the message contains an image.
