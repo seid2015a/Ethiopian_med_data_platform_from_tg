@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432" # Expose for local development/DB clients
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - .:/app # Mount current directory to /app in container
+      - ./data:/app/data # Explicitly mount data directory
+    depends_on:
+      - db
+    # Command to run when starting the app service (e.g., for development or specific script)
+    # This will be overridden by Dagster for orchestration
+    command: tail -f /dev/null # Keep container running for development, replace with dagster dev later
+
+volumes:
+  postgres_data:
