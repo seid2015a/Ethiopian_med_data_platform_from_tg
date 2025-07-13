@@ -1,0 +1,9 @@
+.env
+data/raw/ # To avoid committing large raw data files
+data/processed/ # To avoid committing processed data files
+__pycache__/
+.pytest_cache/
+.dbt/
+dbt_project_name/dbt_packages/
+dbt_project_name/logs/
+dbt_project_name/target/
